@@ -7,7 +7,7 @@ serverName: http://localhost:8080
 security:
   cas:
     casServerName:   https://auth.biodiversitydata.se
-    uriFilterPattern:   /admin*,/alaAdmin*
+    uriFilterPattern:   /admin,/admin/*,/alaAdmin*
     uriExclusionFilterPattern:   /admin/indexFields
     appServerName:   http://localhost:8080
     casServerUrlPrefix:   https://auth.biodiversitydata.se/cas
@@ -16,6 +16,7 @@ security:
     contextPath:
     bypass:   false
     enabled: true
+    authCookieName:
   oidc:
     enabled: false
     clientId:
@@ -26,6 +27,7 @@ security:
     discoveryUri:
   apikey:
     serviceUrl: https://auth.biodiversitydata.se/apikey/ws/check?apikey=
+disableCAS: false
 userDetails:
   url: https://auth.biodiversitydata.se/userdetails/
 biocache:
