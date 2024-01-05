@@ -1,11 +1,35 @@
 #!/usr/bin/env python3
+#
+# This script pre-processes the GBIF Backbone taxonomy before loading it into the bie-index.
+#
+# The original files are renamed (eg. Taxon.tsv -> Taxon.tsv.original) and the processed file
+# is saved with the original name (eg. Taxon.tsv).
+#
+# The following procsessing is done:
+#
+# Taxon
+# -----
+# - Remove scientificNameAuthorship from scientificName (if included) because the bie-index
+#   expects the scientificName to be without authorship.
+#   Eg: Capreolus capreolus (Linnaeus, 1758) -> Capreolus capreolus
+#
+# VernacularName
+# --------------
+# - Only include Swedish and English names
+# - Exclude names from some sources of bad quality
+#
+
 import os
 import sys
 
-ALLOWED_LANGUGES = ['sv', 'en']
+ALLOWED_LANGUAGES = [
+    'sv',
+    'en',
+]
 DISALLOWED_SOURCES = [
-    'Belgian Species List', # This contains comma-seprated lists of names
-    'Abrocomidae', # This and all the following have all names wrongly tagged as English
+    'Belgian Species List', # Contains comma-seprated lists of names
+    # All of these have names in various languages wrongly tagged as English
+    'Abrocomidae',
     'Acrobatidae',
     'Ailuridae',
     'Alpheidae',
@@ -167,6 +191,7 @@ def process_taxon(src_dir):
     destination_path = f'{src_dir}/Taxon.tsv'
     original_path = f'{destination_path}.original'
 
+    # Rename original file (if not already done)
     if not os.path.isfile(original_path):
         os.rename(destination_path, original_path)
 
@@ -181,6 +206,7 @@ def process_taxon(src_dir):
         scientificName = record[5]
         scientificNameAuthorship = record[6]
 
+        # Remove scientificNameAuthorship from scientificName
         if scientificNameAuthorship and scientificName.endswith(scientificNameAuthorship):
             record[5] = scientificName[:-len(scientificNameAuthorship)].strip()
 
@@ -202,6 +228,7 @@ def process_vernacular_name(src_dir):
     destination_path = f'{src_dir}/VernacularName.tsv'
     original_path = f'{destination_path}.original'
 
+    # Rename original file (if not already done)
     if not os.path.isfile(original_path):
         os.rename(destination_path, original_path)
 
@@ -217,8 +244,8 @@ def process_vernacular_name(src_dir):
         language = record[2]
         source = record[7]
 
-        if (row_count == 0 or
-                (language in ALLOWED_LANGUGES and
+        if (row_count == 0 or # Header row
+                (language in ALLOWED_LANGUAGES and
                  source not in DISALLOWED_SOURCES)):
             keep_count = keep_count + 1
             outfile.write(row)
