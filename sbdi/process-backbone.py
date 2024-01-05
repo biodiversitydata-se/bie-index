@@ -2,6 +2,165 @@
 import os
 import sys
 
+ALLOWED_LANGUGES = ['sv', 'en']
+DISALLOWED_SOURCES = [
+    'Belgian Species List', # This contains comma-seprated lists of names
+    'Abrocomidae', # This and all the following have all names wrongly tagged as English
+    'Acrobatidae',
+    'Ailuridae',
+    'Alpheidae',
+    'Annelida',
+    'Anomaluridae',
+    'Antilocapridae',
+    'Aotidae',
+    'Aplodontiidae',
+    'Atelidae',
+    'Balaenidae',
+    'Balaenopteridae',
+    'Bathyergidae',
+    'Bovidae',
+    'Bradypodidae',
+    'Burramyidae',
+    'Caenolestidae',
+    'Calomyscidae',
+    'Camelidae',
+    'Canidae',
+    'Castoridae',
+    'Caviidae',
+    'Cebidae',
+    'Cercopithecidae',
+    'Cervidae',
+    'Cheirogaleidae',
+    'Chinchillidae',
+    'Chlamyphoridae',
+    'Chrysochloridae',
+    'Cnidaria',
+    'Cricetidae',
+    'Ctenodactylidae',
+    'Ctenomyidae',
+    'Cuniculidae',
+    'Cyclopedidae',
+    'Cynocephalidae',
+    'Dasypodidae',
+    'Dasyproctidae',
+    'Dasyuridae',
+    'Daubentoniidae',
+    'Delphinidae',
+    'Diatomyidae',
+    'Didelphidae',
+    'Dinomyidae',
+    'Dipodidae',
+    'Dugongidae',
+    'Echimyidae',
+    'Echinoderms',
+    'Elephantidae',
+    'Equidae',
+    'Erethizontidae',
+    'Erinaceidae',
+    'Eschrichtiidae',
+    'Eupleridae',
+    'Felidae',
+    'Galagidae',
+    'Geomyidae',
+    'Giraffidae',
+    'Gliridae',
+    'Herpestidae',
+    'Heterocephalidae',
+    'Heteromyidae',
+    'Hippopotamidae',
+    'Hipposideridae',
+    'Hominidae',
+    'Hyaenidae',
+    'Hylobatidae',
+    'Hypsiprymnodontidae',
+    'Hystricidae',
+    'Indriidae',
+    'Iniidae',
+    'Lemuridae',
+    'Lepilemuridae',
+    'Leporidae',
+    'Lipotidae',
+    'Lorisidae',
+    'Macropodidae',
+    'Macroscelididae',
+    'Manidae',
+    'Megalonychidae',
+    'Mephitidae',
+    'Molossidae',
+    'Monodontidae',
+    'Mormoopidae',
+    'Moschidae',
+    'Muridae',
+    'Mustelidae',
+    'Myriatrix',
+    'Myrmecobiidae',
+    'Myrmecophagidae',
+    'Mystacinidae',
+    'Myzopodidae',
+    'Nandiniidae',
+    'Natalidae',
+    'Nayades',
+    'Neobalaenidae',
+    'Nesomyidae',
+    'Noctilionidae',
+    'Notoryctidae',
+    'Nycteridae',
+    'Ochotonidae',
+    'Octodontidae',
+    'Odobenidae',
+    'Orycetropodidae',
+    'Otariidae',
+    'Pedetidae',
+    'Peracarida',
+    'Peramelidae',
+    'Petromuridae',
+    'Phalangeridae',
+    'Phitheciidae',
+    'Phocidae',
+    'Phocoenidae',
+    'Phyllostomidae',
+    'Physeteridae',
+    'Platacanthomyidae',
+    'Platanistidae',
+    'Pontoporiidae',
+    'Porifera',
+    'Potamogalidae',
+    'Potoroidae',
+    'Procaviidae',
+    'Procyonidae',
+    'Pseudocheiridae',
+    'Pteropodidae',
+    'Ptilocercidae',
+    'Rhinocerotidae',
+    'Rhinolophidae',
+    'Rhinonycteridae',
+    'Rhinopomatidae',
+    'Sciuridae',
+    'Sminthidae',
+    'Solenodontidae',
+    'Soricidae',
+    'Spalacidae',
+    'Suidae',
+    'Talpidae',
+    'Tapiridae',
+    'Tarsiidae',
+    'Tarsipedidae',
+    'Tayassuidae',
+    'Tenrecidae',
+    'Thryonomyidae',
+    'Thylacomyidae',
+    'Thyropteridae',
+    'Tragulidae',
+    'Trichechidae',
+    'Tupaiidae',
+    'Ursidae',
+    'Vespertilionidae',
+    'Viverridae',
+    'Vombatidae',
+    'Zapodidae',
+    'Ziphiidae',
+]
+
 def process_taxon(src_dir):
     print('\nProcess taxon')
 
@@ -54,11 +213,13 @@ def process_vernacular_name(src_dir):
 
     for row in infile:
 
-        record = row.split('\t')
+        record = row.replace('\n', '').split('\t')
         language = record[2]
         source = record[7]
 
-        if row_count == 0 or language in ['sv', 'en']:
+        if (row_count == 0 or
+                (language in ALLOWED_LANGUGES and
+                 source not in DISALLOWED_SOURCES)):
             keep_count = keep_count + 1
             outfile.write(row)
 
@@ -67,7 +228,7 @@ def process_vernacular_name(src_dir):
     outfile.close()
     infile.close()
 
-    print(f'Done. Processed {row_count} rows. Kept {keep_count} rows.')
+    print(f'Done. Processed {row_count} rows. Kept {keep_count} rows')
 
 def main(argv):
 
