@@ -47,9 +47,9 @@ The solr search index can be built from scratch from the [GBIF Backbone Taxonomy
   ```
   make process-backbone
   ```
-* Go to the /admin page and select **DwCA Import** and import from `/data/bie-index/import/backbone` (~2h)
+* Go to the /admin page and select **DwCA Import** and import from `/data/bie-index/import/backbone` (~2:15h)
 * Go to the /admin page and select **Create Links** and run:
   * **Denormalise taxa** (~8h)
-  * ~~**Build link identifiers** (7:30h)~~
+  * **Build link identifiers** (~7h) (not sure if this is necessary)
   * **Build search and suggest weights** (~2:15h)
   * **Build solr suggestion index** (~15min - the application will throw a read timeout exception but indexing will continue to run on Solr)
