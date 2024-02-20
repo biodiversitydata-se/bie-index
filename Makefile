@@ -9,12 +9,3 @@ run-docker:
 
 release:
 	../sbdi-install/utils/make-release.sh
-
-fetch-backbone:
-	mkdir -p /data/bie-index/import
-	rm -r /data/bie-index/import/backbone
-	wget https://hosted-datasets.gbif.org/datasets/backbone/current/backbone.zip -O /data/bie-index/import/backbone.zip
-	unzip -q /data/bie-index/import/backbone.zip -d /data/bie-index/import/backbone/
-
-process-backbone:
-	./sbdi/process-backbone.py /data/bie-index/import/backbone

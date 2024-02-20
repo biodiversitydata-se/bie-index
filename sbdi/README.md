@@ -37,19 +37,20 @@ Tag 1.0.2 created and pushed.
 
 ## Build search index
 
-The solr search index can be built from scratch from the [GBIF Backbone Taxonomy](https://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c). Before importing the data it needs to be pre-processed (see [process-backbone.py](./process-backbone.py) for details). 
+The solr search index can be built from scratch from the [GBIF Backbone Taxonomy](https://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c) using the [gbif-taxonomy-for-la](https://github.com/biodiversitydata-se/gbif-taxonomy-for-la) project.
 
-* Download backbone (to `/data/bie-index/import`):
+* Clone [gbif-taxonomy-for-la](https://github.com/biodiversitydata-se/gbif-taxonomy-for-la) locally
+* Run (change to current date):
   ```
-  make fetch-backbone
+  ./gbif-taxonomy-for-la-docker --backbone --filter_lang=en,sv --name-authors --namematching-distri=4.3 --namematching-index --dwca 2024-02-16
   ```
-* Pre-process backbone:
-  ```
-  make process-backbone
-  ```
-* Go to the /admin page and select **DwCA Import** and import from `/data/bie-index/import/backbone` (~2:15h)
-* Go to the /admin page and select **Create Links** and run:
+* Unpack the file `target/gbif-backbone-2024-02-16.zip`
+* Start bie-index locally (`make run`)
+* Go to the /ws/admin page and select **DwCA Import** and import from `/home/mats/src/biodiversitydata-se/gbif-taxonomy-for-la/target/gbif-backbone-2024-02-16` (~2:15h)
+* Go to the /ws/admin page and select **Create Links** and run:
   * **Denormalise taxa** (~8h)
   * **Build link identifiers** (~7h) (not sure if this is necessary)
   * **Build search and suggest weights** (~2:15h)
   * **Build solr suggestion index** (~15min - the application will throw a read timeout exception but indexing will continue to run on Solr)
+
+The generated index can then be copied to production.
