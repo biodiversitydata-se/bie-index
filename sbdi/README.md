@@ -37,9 +37,9 @@ Tag 1.0.2 created and pushed.
 
 ## Build search index
 
-The solr search index can be built from scratch from the [GBIF Backbone Taxonomy](https://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c) using the [gbif-taxonomy-for-la](https://github.com/biodiversitydata-se/gbif-taxonomy-for-la) project.
+The solr search index can be built locally from the [GBIF Backbone Taxonomy](https://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c) using the [gbif-taxonomy-for-la](https://github.com/biodiversitydata-se/gbif-taxonomy-for-la) project.
 
-* Clone [gbif-taxonomy-for-la](https://github.com/biodiversitydata-se/gbif-taxonomy-for-la) locally
+* Clone the [gbif-taxonomy-for-la](https://github.com/biodiversitydata-se/gbif-taxonomy-for-la) repo
 * Run (change to current date):
   ```
   ./gbif-taxonomy-for-la-docker --backbone --filter_lang=en,sv --name-authors --namematching-distri=4.3 --namematching-index --dwca 2024-02-16
@@ -53,4 +53,5 @@ The solr search index can be built from scratch from the [GBIF Backbone Taxonomy
   * **Build search and suggest weights** (~2:15h)
   * **Build solr suggestion index** (~15min - the application will throw a read timeout exception but indexing will continue to run on Solr)
 
-The generated index can then be copied to production.
+### Put search index in production
+Copy the `data/bie`-directory from the solr data directory to live-manager-1. It should replace the directory `/docker_nfs/var/volumes/data_bie_solr/data/bie`. Restart the `bie-index_bie-solr` service.
