@@ -55,6 +55,9 @@ class SitemapService{
      * Index Knowledge Base pages.
      */
     def build(boolean online) throws Exception {
+        // SBDI: Without resetting this it will only work correctly on the first run
+        fileCount = 0;
+
         // write all sitemaps
         initWriter()
 
@@ -81,7 +84,8 @@ class SitemapService{
             new File(grailsApplication.config.sitemap.dir + "/sitemap" + i + ".xml.tmp").renameTo(newFile)
 
             // add an entry for this new file
-            fw.write("<sitemap><url>" + grailsApplication.config.grails.serverURL + '/sitemap' + i + ".xml" + "</url>")
+            // SBDI: should be 'loc' and not 'url'
+            fw.write("<sitemap><loc>" + grailsApplication.config.grails.serverURL + '/sitemap' + i + ".xml" + "</loc>")
             fw.write("<lastmod>" + simpleDateFormat.format(new Date()) + "</lastmod></sitemap>")
         }
 
@@ -141,7 +145,8 @@ class SitemapService{
 
                     if (nameString) {
                         if (searchService.lookupTaxonByName(nameString, null)) {
-                            writeUrl("monthly", grailsApplication.config.grails.serverURL + "/species/" + URLEncoder.encode(nameString))
+                            // SBDI: link to hub and not to web service
+                            writeUrl("monthly", grailsApplication.config.getProperty('bie.baseURL') + "/species/" + URLEncoder.encode(nameString, 'UTF-8'))
                         } else {
                             failed++
                         }
@@ -149,7 +154,8 @@ class SitemapService{
 
                     if (commonName) {
                         if (searchService.lookupTaxonByName(commonName, null)) {
-                            writeUrl("monthly", grailsApplication.config.grails.serverURL + "/species/" +  URLEncoder.encode(commonName))
+                            // SBDI: link to hub and not to web service
+                            writeUrl("monthly", grailsApplication.config.getProperty('bie.baseURL') + "/species/" +  URLEncoder.encode(commonName, 'UTF-8'))
                         } else {
                             failed++
                         }

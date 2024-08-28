@@ -6,12 +6,13 @@ Create data directory at `/data/bie-index` and populate as below (it is easiest 
 ```
 mats@xps-13:/data/bie-index$ tree
 .
-└── config
-    ├── bie-index-config.yml -> /home/mats/src/biodiversitydata-se/bie-index/sbdi/data/config/bie-index-config.yml
-    ├── conservation-lists.json -> /home/mats/src/biodiversitydata-se/bie-index/sbdi/data/config/conservation-lists.json
-    ├── image-lists.json -> /home/mats/src/biodiversitydata-se/bie-index/sbdi/data/config/image-lists.json
-    ├── locality-keywords.json -> /home/mats/src/biodiversitydata-se/bie-index/sbdi/data/config/locality-keywords.json
-    └── vernacular-lists.json -> /home/mats/src/biodiversitydata-se/bie-index/sbdi/data/config/vernacular-lists.json
+├── config
+│   ├── bie-index-config.yml -> /home/mats/src/biodiversitydata-se/bie-index/sbdi/data/config/bie-index-config.yml
+│   ├── conservation-lists.json -> /home/mats/src/biodiversitydata-se/bie-index/sbdi/data/config/conservation-lists.json
+│   ├── image-lists.json -> /home/mats/src/biodiversitydata-se/bie-index/sbdi/data/config/image-lists.json
+│   ├── locality-keywords.json -> /home/mats/src/biodiversitydata-se/bie-index/sbdi/data/config/locality-keywords.json
+│   └── vernacular-lists.json -> /home/mats/src/biodiversitydata-se/bie-index/sbdi/data/config/vernacular-lists.json
+└── sitemap
 ```
 
 ## Usage
