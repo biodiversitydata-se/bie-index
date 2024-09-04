@@ -137,30 +137,13 @@ class SitemapService{
                 def response = indexService.query(query, online)
                 def docs = response.results
                 int total = docs.numFound
-                int failed = 0
 
                 docs.each { doc ->
-                    def nameString = doc.scientificName ?: doc.nameComplete
-                    def commonName = doc.commonNameSingle
-
-                    if (nameString) {
-                        if (searchService.lookupTaxonByName(nameString, null)) {
-                            // SBDI: link to hub and not to web service
-                            writeUrl("monthly", grailsApplication.config.getProperty('bie.baseURL') + "/species/" + URLEncoder.encode(nameString, 'UTF-8'))
-                        } else {
-                            failed++
-                        }
-                    }
-
-                    if (commonName) {
-                        if (searchService.lookupTaxonByName(commonName, null)) {
-                            // SBDI: link to hub and not to web service
-                            writeUrl("monthly", grailsApplication.config.getProperty('bie.baseURL') + "/species/" +  URLEncoder.encode(commonName, 'UTF-8'))
-                        } else {
-                            failed++
-                        }
-                    }
-
+                    // SBDI:
+                    // The sitemap should not link to url:s that return redirects. This is what the scientific
+                    // and common name url:s do. Instead link to the guid which is where the page actually is.
+                    // Also, link to hub and not to web service.
+                    writeUrl("monthly", grailsApplication.config.getProperty('bie.baseURL') + "/species/" + doc.guid)
                     processed++
                 }
 
