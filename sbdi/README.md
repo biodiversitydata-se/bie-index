@@ -12,7 +12,8 @@ mats@xps-13:/data/bie-index$ tree
 │   ├── image-lists.json -> /home/mats/src/biodiversitydata-se/bie-index/sbdi/data/config/image-lists.json
 │   ├── locality-keywords.json -> /home/mats/src/biodiversitydata-se/bie-index/sbdi/data/config/locality-keywords.json
 │   └── vernacular-lists.json -> /home/mats/src/biodiversitydata-se/bie-index/sbdi/data/config/vernacular-lists.json
-└── sitemap
+└── data
+    └── sitemap
 ```
 
 ## Usage

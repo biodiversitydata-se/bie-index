@@ -197,5 +197,5 @@ downloadMaxRows: 100000
 taxonRanksFile:
 
 sitemap:
-  dir: /data/bie-index/sitemap
+  dir: /data/bie-index/data/sitemap
   enabled: true
