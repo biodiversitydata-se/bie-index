@@ -55,6 +55,9 @@ class SitemapService{
      * Index Knowledge Base pages.
      */
     def build(boolean online) throws Exception {
+        // SBDI: Without resetting this it will only work correctly on the first run
+        fileCount = 0;
+
         // write all sitemaps
         initWriter()
 
@@ -81,7 +84,8 @@ class SitemapService{
             new File(grailsApplication.config.sitemap.dir + "/sitemap" + i + ".xml.tmp").renameTo(newFile)
 
             // add an entry for this new file
-            fw.write("<sitemap><url>" + grailsApplication.config.grails.serverURL + '/sitemap' + i + ".xml" + "</url>")
+            // SBDI: should be 'loc' and not 'url'
+            fw.write("<sitemap><loc>" + grailsApplication.config.grails.serverURL + '/sitemap' + i + ".xml" + "</loc>")
             fw.write("<lastmod>" + simpleDateFormat.format(new Date()) + "</lastmod></sitemap>")
         }
 
@@ -133,28 +137,13 @@ class SitemapService{
                 def response = indexService.query(query, online)
                 def docs = response.results
                 int total = docs.numFound
-                int failed = 0
 
                 docs.each { doc ->
-                    def nameString = doc.scientificName ?: doc.nameComplete
-                    def commonName = doc.commonNameSingle
-
-                    if (nameString) {
-                        if (searchService.lookupTaxonByName(nameString, null)) {
-                            writeUrl("monthly", grailsApplication.config.grails.serverURL + "/species/" + URLEncoder.encode(nameString))
-                        } else {
-                            failed++
-                        }
-                    }
-
-                    if (commonName) {
-                        if (searchService.lookupTaxonByName(commonName, null)) {
-                            writeUrl("monthly", grailsApplication.config.grails.serverURL + "/species/" +  URLEncoder.encode(commonName))
-                        } else {
-                            failed++
-                        }
-                    }
-
+                    // SBDI:
+                    // The sitemap should not link to url:s that return redirects. This is what the scientific
+                    // and common name url:s do. Instead link to the guid which is where the page actually is.
+                    // Also, link to hub and not to web service.
+                    writeUrl("monthly", grailsApplication.config.getProperty('bie.baseURL') + "/species/" + doc.guid)
                     processed++
                 }
 
