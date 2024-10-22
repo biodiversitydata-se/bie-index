@@ -32,13 +32,13 @@ class SitemapService{
     Locale defaultLocale
 
 
-    String URLSET_HEADER = "<?xml version='1.0' encoding='UTF-8'?><urlset xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\" xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">"
+    String URLSET_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><urlset xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\" xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">"
     String URLSET_FOOTER = "</urlset>"
 
     // Batch size for solr queries/commits and page sizes
     static BATCH_SIZE = 5000
 
-    int MAX_URLS = 50000 // maximum number of URLs in a sitemap file
+    int MAX_URLS = 10000 // maximum number of URLs in a sitemap file
     int MAX_SIZE = 9*1024*1024 // use 9MB to keep the actual file size below 10MB (a gateway limit)
 
     File currentFile
@@ -72,7 +72,7 @@ class SitemapService{
 
         // write parent sitemap file
         fw = new FileWriter(grailsApplication.config.sitemap.dir + "/sitemap.xml")
-        fw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?><sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">")
+        fw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?><sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n")
 
         for (int i=0;i<fileCount;i++) {
 
@@ -84,9 +84,9 @@ class SitemapService{
             new File(grailsApplication.config.sitemap.dir + "/sitemap" + i + ".xml.tmp").renameTo(newFile)
 
             // add an entry for this new file
-            // SBDI: should be 'loc' and not 'url'
-            fw.write("<sitemap><loc>" + grailsApplication.config.grails.serverURL + '/sitemap' + i + ".xml" + "</loc>")
-            fw.write("<lastmod>" + simpleDateFormat.format(new Date()) + "</lastmod></sitemap>")
+            // SBDI: Should be 'loc' and not 'url'. Serve sitemap without /ws path.
+            fw.write("<sitemap><loc>" + grailsApplication.config.getProperty('bie.baseURL') + '/sitemap' + i + ".xml" + "</loc>")
+            fw.write("<lastmod>" + simpleDateFormat.format(new Date()) + "</lastmod></sitemap>\n")
         }
 
         fw.write("</sitemapindex>")
@@ -99,7 +99,7 @@ class SitemapService{
 
         fw = new FileWriter(currentFile)
 
-        fw.write(URLSET_HEADER)
+        fw.write(URLSET_HEADER + "\n")
 
         countUrls = 0
         fileCount++
@@ -173,7 +173,7 @@ class SitemapService{
         fw.write("<loc>" + encodedUrl + "</loc>")
         fw.write("<lastmod>" + simpleDateFormat.format(new Date()) + "</lastmod>")
         fw.write("<changefreq>" + changefreq + "</changefreq>")
-        fw.write("</url>")
+        fw.write("</url>\n")
 
         fw.flush()
 
