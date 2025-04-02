@@ -1,7 +1,7 @@
 services:
 
   bie-solr:
-    image: ghcr.io/biodiversitydata-se/bie-solr:1.0.1
+    image: ghcr.io/biodiversitydata-se/bie-solr:1.0.3
     #image: sbdi/bie-solr-dev
     environment:
       SOLR_HEAP: 4g
