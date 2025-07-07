@@ -57,3 +57,9 @@ The solr search index can be built locally from the [GBIF Backbone Taxonomy](htt
 
 ### Put search index in production
 Copy the `data/bie`-directory from the solr data directory to live-manager-1. It should replace the directory `/docker_nfs/var/volumes/data_bie_solr/data/bie`. Restart the `bie-index_bie-solr` service.
+
+### Index other things
+The following have been indexed directly in the production environment. Check the *Use online index* checkbox when indexing them. All processes are quite fast.
+- Collectory
+- Species lists
+- Spatial layers
