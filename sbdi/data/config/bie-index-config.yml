@@ -153,10 +153,10 @@ skin:
   layout: main
   fluidLayout: false
   orgNameLong: Swedish Biodiversity Data Infrastructure
-  favicon: https://static.biodiversitydata.se/favicon.ico
-  homeUrl: https://tools.biodiversitydata.se
+  favicon: https://bioatlas.biodiversitydata.se/favicon.ico
+  homeUrl: https://bioatlas.biodiversitydata.se
 headerAndFooter:
-  baseURL: https://static.biodiversitydata.se
+  baseURL: https://bioatlas.biodiversitydata.se
   version: 2
 useLegacyAuto: false
 import:
